@@ -3,14 +3,13 @@ include_once('Tarea.php');
 include_once('GestorTareas.php');
 session_start();
 
-$gestorTareas = new GestorTareas();
-$tarea1 = new Tarea('No fumar');
-$tarea2 = new Tarea('Estudiar PHP');
+if (!isset($_SESSION['gestorTareas'])){
+    $gestorTareas = new GestorTareas();
+    $_SESSION['gestorTareas'] = $gestorTareas;
+}
 
-$gestorTareas->anadirTarea($tarea1)->anadirTarea($tarea2);
-
-$_SESSION['gestorTareas'] = $gestorTareas;
-
+$gestorTareas = $_SESSION['gestorTareas'];
+$_SESSION["error"] = "";
 
 ?>
 
@@ -23,15 +22,24 @@ $_SESSION['gestorTareas'] = $gestorTareas;
 </head>
 <body>
     <h1>Streaks de Temu</h1>
-    <form action="">
+    <form action="index.php" method="post">
         <label for="date">Fecha:</label>
-        <input type="date" id="date" required><br>
+        <input type="date" name="date" id="date" required><br>
 
-        Tareas con checkboxes
+        <?php
+        $arrayTareas = $gestorTareas->getTareas();
+        foreach ($arrayTareas as $tarea){
+            echo ("<label for='tarea".$tarea->getId()."'>" . $tarea->getId() . " - " . $tarea->getNombre()."</label>
+                   <input type='checkbox' name='tarea".$tarea->getId()."' id='tarea".$tarea->getId()."'><br>");
+        }
+        ?>
+
         <br><button type="submit">Enviar tareas de hoy</button>
     </form>
 
-    <br><a href="nuevaTarea.php">➕Nueva Tarea</a>
+    <br><a href="formNuevaTarea.php">➕Nueva Tarea</a>
+    <br><a href="formEliminarTarea.php">➖Eliminar Tarea</a>
+    <br><a href="logout.php" onclick="return confirm('¡Cuidado! Perderás los datos de tus tareas. ¿Estás seguro?')">🚪Cerrar sesión</a>
 
 </body>
 </html>

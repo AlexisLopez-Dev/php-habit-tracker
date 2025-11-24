@@ -1,12 +1,11 @@
 <?php
 class Tarea {
-    private static int $contador = 1;
-    private int $id;
+    private int $id;  // <- Esto lo habría hecho con un contador estático para que autoincrementase, pero trabajando con sesion no funciona bien el static
     private string $nombre;
     private array $fechas;
 
-    public function __construct($nombre){
-        $this->id = self::$contador++;
+    public function __construct(int $id, string $nombre){
+        $this->id = $id;
         $this->nombre = $nombre;
         $this->fechas = [];
     }
@@ -33,6 +32,10 @@ class Tarea {
 
     public function setFechas(array $fechas): void{
         $this->fechas = $fechas;
+    }
+
+    public function __toString(){
+        return $this->id . ": " . $this->nombre;
     }
 
 }
