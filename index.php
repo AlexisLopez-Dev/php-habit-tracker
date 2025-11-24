@@ -22,7 +22,7 @@ $_SESSION["error"] = "";
 </head>
 <body>
     <h1>Streaks de Temu</h1>
-    <form action="index.php" method="post">
+    <form action="anadeFechaEnTareas.php" method="post">
         <label for="date">Fecha:</label>
         <input type="date" name="date" id="date" required><br>
 
@@ -30,7 +30,10 @@ $_SESSION["error"] = "";
         $arrayTareas = $gestorTareas->getTareas();
         foreach ($arrayTareas as $tarea){
             echo ("<label for='tarea".$tarea->getId()."'>" . $tarea->getId() . " - " . $tarea->getNombre()."</label>
-                   <input type='checkbox' name='tarea".$tarea->getId()."' id='tarea".$tarea->getId()."'><br>");
+                   <input type='checkbox' 
+                          name='tareasSeleccionadas[]' 
+                          value='".$tarea->getId()."'
+                          id='tarea".$tarea->getId()."'><br>");
         }
         ?>
 

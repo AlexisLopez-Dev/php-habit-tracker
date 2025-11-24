@@ -34,6 +34,11 @@ class GestorTareas {
         array_splice($this->tareas, $indice, 1);
     }
 
+    public function anadeFechaEnTarea(int $id, DateTime $fecha){
+        $tarea = $this->buscarPorId($id);
+        $tarea->anadirFecha($fecha);
+    }
+
     public function getTareas(): array {
         return $this->tareas;
     }
