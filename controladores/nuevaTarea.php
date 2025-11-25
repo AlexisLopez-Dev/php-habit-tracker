@@ -1,6 +1,10 @@
 <?php
-include_once('Tarea.php');
-include_once('GestorTareas.php');
+include_once('../modelos/Tarea.php');
+include_once('../modelos/GestorTareas.php');
+
+use Modelos\Tarea;
+use Modelos\GestorTareas;  // todo: aqui no hacen falta los use? por qué?
+
 session_start();
 
 $nombre = $_POST["nombre"] ?? "";
@@ -15,5 +19,5 @@ $gestorTareas->anadirTarea($nombre);
 
 $_SESSION['gestorTareas'] = $gestorTareas;
 
-header('Location: index.php');
+header('Location: ../index.php');
 exit();

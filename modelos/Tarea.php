@@ -1,4 +1,5 @@
 <?php
+namespace Modelos;
 class Tarea {
     private int $id;  // <- Esto lo habría hecho con un contador estático para que autoincrementase, pero trabajando con sesion no funciona bien el static
     private string $nombre;
@@ -11,7 +12,18 @@ class Tarea {
     }
 
     public function anadirFecha($nuevaFecha){
-        $this->fechas[] = $nuevaFecha;
+        if(!in_array($nuevaFecha, $this->fechas)){
+            $this->fechas[] = $nuevaFecha;
+        }
+    }
+
+    // todo: repasar esto de la clave => valor
+    public function eliminarFecha($fecha){
+        foreach($this->fechas as $clave => $valor){
+            if($valor == $fecha){
+                unset($this->fechas[$clave]);
+            }
+        }
     }
 
     public function getNombre(): string{
@@ -35,7 +47,14 @@ class Tarea {
     }
 
     public function __toString(){
-        return $this->id . ": " . $this->nombre;
+
+        $cadena = $this->id . "- " . $this->nombre . " - ";
+        foreach ($this->fechas as $fecha){
+            $fechaStringFormateada = $fecha->format('d/m/Y');
+            $cadena += $fechaStringFormateada ;
+        }
+
+        return $cadena;
     }
 
 }

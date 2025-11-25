@@ -12,13 +12,13 @@ session_start();
 </head>
 <body>
     <h1>Nueva tarea</h1>
-    <form action="nuevaTarea.php" method="post">
+    <form action="../controladores/nuevaTarea.php" method="post">
         <label for="nombre">Nombre de la tarea:</label>
         <input type="text" id="nombre" name="nombre" required>
 
         <button type="submit">Crear tarea</button>
         <div style="color: red"><?= $_SESSION["error"] ?? "" ?></div>
     </form>
-    <a href="index.php">🏠Volver a inicio</a>
+    <a href="../index.php">🏠Volver a inicio</a>
 </body>
 </html>

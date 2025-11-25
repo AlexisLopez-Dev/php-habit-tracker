@@ -1,5 +1,6 @@
 <?php
-include_once('GestorTareas.php');
+include_once('../modelos/Tarea.php');
+include_once('../modelos/GestorTareas.php');
 session_start();
 
 $gestorTareas = $_SESSION["gestorTareas"];
@@ -20,5 +21,5 @@ if (empty($gestorTareas->buscarPorId($id))){
 
 $gestorTareas->eliminarTarea($id);
 $_SESSION["gestorTareas"] = $gestorTareas;
-header('Location: index.php');
+header('Location: ../index.php');
 exit();

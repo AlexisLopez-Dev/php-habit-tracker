@@ -1,5 +1,7 @@
 <?php
-include_once('Tarea.php');
+namespace Modelos;
+
+include_once('modelos/Tarea.php');
 class GestorTareas {
     private array $tareas;
     private int $ultimoId;
