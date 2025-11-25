@@ -11,13 +11,12 @@ if (!isset($_SESSION['gestorTareas'])){
     include_once('servicios/simulaBBDD.php');
 }
 $fechaVista = new Datetime();
+$fechaVista->setTime(0,0,0);
+
 $gestorTareas = $_SESSION['gestorTareas'];
 $_SESSION["error"] = "";
 
-// todo: reordenar en carpetas modelos, controladores, vistas, servicios? (para simular bbdd)
-
-// todo: con el atributo check: checked ir comprobando en cada día si la tarea está hecha, mostrarla checked
-// todo: metodo en gestorTareas para checkar-deschekar
+// todo: Dar opcion de subir imagen al crear la tarea
 ?>
 
 <!doctype html>
@@ -29,18 +28,29 @@ $_SESSION["error"] = "";
 </head>
 <body>
     <h1>Streaks de Temu</h1>
-    <form action="controladores/anadeFechaEnTareas.php" method="post">
+    <form action="controladores/toggleTareas.php" method="post">
         <label for="date">Fecha:</label>
         <input type="date" name="date" id="date" value="<?=$fechaVista->format('Y-m-d')?>" required><br>
 
         <?php
         $arrayTareas = $gestorTareas->getTareas();
+        $fechaVistaString = $fechaVista->format('Y-m-d'); // prueba
+
         foreach ($arrayTareas as $tarea){
+            $checkedEstado = "";
+            $fechasStringsGuardadas = array_map(fn($fecha) => $fecha->format('Y-m-d'), $tarea->getFechas()); // prueba
+
+            if(in_array($fechaVistaString, $fechasStringsGuardadas)){
+                $checkedEstado = "checked";
+            }
+
             echo ("<label for='tarea".$tarea->getId()."'>" . $tarea->getId() . " - " . $tarea->getNombre()."</label>
                    <input type='checkbox' 
                           name='tareasSeleccionadas[]' 
                           value='".$tarea->getId()."'
-                          id='tarea".$tarea->getId()."'><br>");
+                          id='tarea".$tarea->getId()."'
+                          $checkedEstado
+                          ><br>");
         }
         ?>
 

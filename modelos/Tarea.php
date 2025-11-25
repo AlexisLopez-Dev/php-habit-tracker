@@ -17,7 +17,6 @@ class Tarea {
         }
     }
 
-    // todo: repasar esto de la clave => valor
     public function eliminarFecha($fecha){
         foreach($this->fechas as $clave => $valor){
             if($valor == $fecha){
@@ -25,6 +24,8 @@ class Tarea {
             }
         }
     }
+
+
 
     public function getNombre(): string{
         return $this->nombre;

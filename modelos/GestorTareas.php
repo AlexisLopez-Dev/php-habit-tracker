@@ -1,5 +1,6 @@
 <?php
 namespace Modelos;
+use DateTime;
 
 include_once('modelos/Tarea.php');
 class GestorTareas {
@@ -36,9 +37,22 @@ class GestorTareas {
         array_splice($this->tareas, $indice, 1);
     }
 
-    public function anadeFechaEnTarea(int $id, DateTime $fecha){
+
+    public function toggleTarea(int $id, DateTime $fecha){
         $tarea = $this->buscarPorId($id);
+        if(in_array($fecha, $tarea->getFechas())){
+            $this->eliminaFechaEnTarea($tarea, $fecha);
+        } else {
+            $this->anadeFechaEnTarea($tarea, $fecha);
+        }
+    }
+
+    public function anadeFechaEnTarea(Tarea $tarea, DateTime $fecha){
         $tarea->anadirFecha($fecha);
+    }
+
+    public function eliminaFechaEnTarea(Tarea $tarea, DateTime $fecha){
+        $tarea->eliminarFecha($fecha);
     }
 
     public function getTareas(): array {
