@@ -10,57 +10,93 @@ session_start();
 if (!isset($_SESSION['gestorTareas'])){
     include_once('servicios/simulaBBDD.php');
 }
-$fechaVista = new Datetime();
-$fechaVista->setTime(0,0,0);
 
 $gestorTareas = $_SESSION['gestorTareas'];
 $_SESSION["error"] = "";
 
-// todo: Dar opcion de subir imagen al crear la tarea
+if(isset($_GET['fecha'])){
+    $fechaVista = DateTime::createFromFormat('Y-m-d', $_GET['fecha']);
+} else {
+    $fechaVista = new Datetime();
+}
+$fechaVista->setTime(0,0,0);
+$fechaVistaString = $fechaVista->format('Y-m-d');
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Streaks de Temu</title>
+    <title>Streaks</title>
+    <link rel="icon" type="image/svg+xml" href="css/favicon.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Streaks de Temu</h1>
-    <form action="controladores/toggleTareas.php" method="post">
-        <label for="date">Fecha:</label>
-        <input type="date" name="date" id="date" value="<?=$fechaVista->format('Y-m-d')?>" required><br>
 
-        <?php
-        $arrayTareas = $gestorTareas->getTareas();
-        $fechaVistaString = $fechaVista->format('Y-m-d'); // prueba
+<div class="container">
+    <h1>Mis Hábitos</h1>
 
-        foreach ($arrayTareas as $tarea){
-            $checkedEstado = "";
-            $fechasStringsGuardadas = array_map(fn($fecha) => $fecha->format('Y-m-d'), $tarea->getFechas()); // prueba
-
-            if(in_array($fechaVistaString, $fechasStringsGuardadas)){
-                $checkedEstado = "checked";
-            }
-
-            echo ("<label for='tarea".$tarea->getId()."'>" . $tarea->getId() . " - " . $tarea->getNombre()."</label>
-                   <input type='checkbox' 
-                          name='tareasSeleccionadas[]' 
-                          value='".$tarea->getId()."'
-                          id='tarea".$tarea->getId()."'
-                          $checkedEstado
-                          ><br>");
-        }
-        ?>
-
-        <br><button type="submit">Enviar tareas de hoy</button>
+    <form action="index.php" method="get" class="date-picker">
+        <label for="fecha">Fecha:</label>
+        <input type="date" name="fecha" id="fecha" value="<?=$fechaVistaString?>" onchange="this.form.submit()">
     </form>
 
-    <br><a href="vistas/formNuevaTarea.php">➕Nueva Tarea</a>
-    <br><a href="vistas/formEliminarTarea.php">➖Eliminar Tarea</a>
-    <br><a href="controladores/logout.php" onclick="return confirm('¡Cuidado! Perderás los datos de tus tareas. ' +
-     '¿Estás seguro?')">🚪Cerrar sesión</a>
+    <ul class="lista-tareas">
+        <?php
+        $arrayTareas = $gestorTareas->getTareas();
+
+        foreach ($arrayTareas as $tarea){
+            $fechasStringsGuardadas = array_map(fn($f) => $f->format('Y-m-d'), $tarea->getFechas());
+            $estaCompletada = in_array($fechaVistaString, $fechasStringsGuardadas);
+
+            if($estaCompletada){
+                $claseEstado = "completada";
+            } else {
+                $claseEstado = "pendiente";
+            }
+
+            $urlToggle = "controladores/toggleTareas.php?id=" . $tarea->getId() . "&date=" . $fechaVistaString;
+            $urlEliminar = "controladores/eliminarTarea.php?id=" . $tarea->getId();
+
+            echo "<li class='tarea-item'>";
+
+                    echo "<a href='$urlToggle' class='enlace-toggle'>";
+
+                    echo "<div class='estado-btn $claseEstado'>";
+                    echo "<i class='" . $tarea->getIcono() . "'></i>";
+                    echo "</div>";
+
+                    echo "<div class='info-tarea'>";
+                    echo "<span class='nombre-tarea $claseEstado'>" . $tarea->getNombre() . "</span>";
+                    echo "</div>";
+
+                    echo "</a>";
+
+                echo "<a href='$urlEliminar' class='btn-eliminar' onclick=\"return confirm('¿Borrar?')\">";
+                echo "<i class='fa-solid fa-xmark'></i>";
+                echo "</a>";
+
+            echo "</li>";
+        }
+        ?>
+    </ul>
+
+    <p style='text-align: center; color: #666;'>
+    <?= (empty($arrayTareas)) ? "No tienes hábitos creados para hoy" : ""?>
+    </p>
+
+    <br>
+
+    <a href="vistas/formNuevaTarea.php" class="btn-action btn-primary">
+        <i class="fa-solid fa-plus"></i> Nuevo Hábito
+    </a>
+
+    <a href="controladores/logout.php" class="btn-action" onclick="return confirm('¿Cerrar sesión?')">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+    </a>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,238 @@
+/* --- Variables y Configuración General --- */
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --accent-color: #d946ef;
+    --accent-glow: rgba(217, 70, 239, 0.4);
+    --danger: #ef4444;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 800;
+    background: linear-gradient(to right, #c084fc, #e879f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+}
+
+/* --- Formulario General --- */
+input[type="date"], input[type="text"] {
+    background: #333;
+    border: 1px solid #444;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent-color);
+}
+
+/* --- Selector de Iconos (Grid) --- */
+.icon-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.icon-option-input {
+    display: none;
+}
+
+.icon-option-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background: #333;
+    border: 2px solid #444;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #888;
+    transition: all 0.2s ease;
+}
+
+.icon-option-label:hover {
+    background: #444;
+}
+
+.icon-option-input:checked + .icon-option-label {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 0 10px var(--accent-glow);
+    transform: scale(1.05);
+}
+
+/* --- Date Picker --- */
+.date-picker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: var(--card-bg);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.date-picker input {
+    width: auto;
+}
+
+/* --- Lista de Tareas --- */
+.lista-tareas {
+    list-style: none;
+    padding: 0;
+}
+
+.tarea-item {
+    padding: 0;
+    background-color: var(--card-bg);
+    margin-bottom: 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.enlace-toggle {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 15px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* --- Botón Circular (Icono) --- */
+.estado-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    border: 2px solid #444;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #555;
+}
+
+.estado-btn.completada {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: scale(1.05);
+    color: white;
+}
+
+/* --- Efectos Hover --- */
+.tarea-item:hover {
+    transform: translateY(-2px);
+}
+
+.tarea-item:hover .estado-btn:not(.completada) {
+    border-color: #666;
+    color: #888;
+}
+
+/* --- Textos y Elementos de Tarea --- */
+.info-tarea {
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+.nombre-tarea {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.nombre-tarea.completada {
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.btn-eliminar {
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: 0.2s;
+    margin-right: 15px;
+    padding: 10px;
+    z-index: 10;
+}
+
+.btn-eliminar:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+/* --- Botones de Acción --- */
+.btn-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background: #333;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: transform 0.2s ease, background 0.2s ease;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-action:hover {
+    background: #444;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    background: #c026d3;
+    box-shadow: 0 6px 20px var(--accent-glow);
+}

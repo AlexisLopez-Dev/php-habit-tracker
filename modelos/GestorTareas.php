@@ -11,10 +11,10 @@ class GestorTareas {
         $this->ultimoId = 0;
     }
 
-    public function anadirTarea(string $nombreTarea): GestorTareas{
+    public function anadirTarea(string $nombreTarea, string $icono = "📝"): GestorTareas{
         $this->ultimoId++;
 
-        $nuevaTarea = new Tarea($this->ultimoId, $nombreTarea);
+        $nuevaTarea = new Tarea($this->ultimoId, $nombreTarea, $icono);
         $this->tareas[] = $nuevaTarea;
         return $this;
     }

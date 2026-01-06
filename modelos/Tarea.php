@@ -1,13 +1,15 @@
 <?php
 namespace Modelos;
 class Tarea {
-    private int $id;  // <- Esto lo habría hecho con un contador estático para que autoincrementase, pero trabajando con sesion no funciona bien el static
+    private int $id;
     private string $nombre;
+    private string $icono;
     private array $fechas;
 
-    public function __construct(int $id, string $nombre){
+    public function __construct(int $id, string $nombre, string $icono="📝"){
         $this->id = $id;
         $this->nombre = $nombre;
+        $this->icono = $icono;
         $this->fechas = [];
     }
 
@@ -24,7 +26,6 @@ class Tarea {
             }
         }
     }
-
 
 
     public function getNombre(): string{
@@ -47,15 +48,12 @@ class Tarea {
         $this->fechas = $fechas;
     }
 
-    public function __toString(){
+    public function getIcono(): string {
+        return $this->icono;
+    }
 
-        $cadena = $this->id . "- " . $this->nombre . " - ";
-        foreach ($this->fechas as $fecha){
-            $fechaStringFormateada = $fecha->format('d/m/Y');
-            $cadena += $fechaStringFormateada ;
-        }
-
-        return $cadena;
+    public function setIcono(string $icono): void {
+        $this->icono = $icono;
     }
 
 }
