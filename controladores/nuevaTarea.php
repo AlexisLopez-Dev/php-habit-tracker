@@ -1,9 +1,6 @@
 <?php
-include_once('../modelos/Tarea.php');
-include_once('../modelos/GestorTareas.php');
-
-use Modelos\Tarea;
-use Modelos\GestorTareas;
+include_once('../modelos/DAOTarea.php');
+use Modelos\DAOTarea;
 
 session_start();
 
@@ -15,11 +12,9 @@ if (empty($nombre)){
     header('Location: ../vistas/formNuevaTarea.php');
     exit();
 }
-$gestorTareas = $_SESSION["gestorTareas"];
 
-$gestorTareas->anadirTarea($nombre, $icono);
-
-$_SESSION['gestorTareas'] = $gestorTareas;
+$dao = new DAOTarea();
+$dao->insert($nombre, $icono);
 
 header('Location: ../index.php');
 exit();

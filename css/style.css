@@ -95,15 +95,66 @@ input[type="text"]:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     margin-bottom: 20px;
     background: var(--card-bg);
-    padding: 10px;
     border-radius: 12px;
+    padding: 5px 15px;
+    gap: 5px;
 }
 
 .date-picker input {
     width: auto;
+}
+
+/* --- Navegación de Fechas --- */
+.btn-nav-fecha {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-nav-fecha:hover {
+    color: var(--accent-color);
+    transform: scale(1.2);
+}
+
+.btn-nav-fecha.disabled {
+    color: #333;
+    cursor: default;
+    pointer-events: none;
+}
+
+.date-picker input[type="date"] {
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 170px;
+    color: white;
+    font-family: inherit;
+}
+
+.date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.date-picker input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
 }
 
 /* --- Lista de Tareas --- */

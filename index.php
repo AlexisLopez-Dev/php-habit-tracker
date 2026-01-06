@@ -1,17 +1,12 @@
 <?php
-include_once('modelos/Tarea.php');
-include_once('modelos/GestorTareas.php');
+include_once('modelos/DAOTarea.php');
+use Modelos\DAOTarea;
 
-use Modelos\Tarea;
-use Modelos\GestorTareas;
+$dao = new DAOTarea();
+$arrayTareas = $dao->getAll();
 
 session_start();
 
-if (!isset($_SESSION['gestorTareas'])){
-    include_once('servicios/simulaBBDD.php');
-}
-
-$gestorTareas = $_SESSION['gestorTareas'];
 $_SESSION["error"] = "";
 
 if(isset($_GET['fecha'])){
@@ -21,6 +16,21 @@ if(isset($_GET['fecha'])){
 }
 $fechaVista->setTime(0,0,0);
 $fechaVistaString = $fechaVista->format('Y-m-d');
+
+$hoy = new DateTime();
+$hoy->setTime(0,0,0);
+$hoyString = $hoy->format('Y-m-d');
+
+$ayer = new DateTime($fechaVistaString);
+$ayer->modify('-1 day');
+$ayerString = $ayer->format('Y-m-d');
+
+$manana = new DateTime($fechaVistaString);
+$manana->modify('+1 day');
+$mananaString = $manana->format('Y-m-d');
+
+$puedeAvanzar = ($manana <= $hoy);
+
 ?>
 
 <!doctype html>
@@ -28,7 +38,7 @@ $fechaVistaString = $fechaVista->format('Y-m-d');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Streaks</title>
+    <title>Gestor de hábitos</title>
     <link rel="icon" type="image/svg+xml" href="css/favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -39,13 +49,31 @@ $fechaVistaString = $fechaVista->format('Y-m-d');
     <h1>Mis Hábitos</h1>
 
     <form action="index.php" method="get" class="date-picker">
-        <label for="fecha">Fecha:</label>
-        <input type="date" name="fecha" id="fecha" value="<?=$fechaVistaString?>" onchange="this.form.submit()">
+
+        <a href="index.php?fecha=<?=$ayerString?>" class="btn-nav-fecha">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+
+        <input type="date" name="fecha" id="fecha"
+               value="<?=$fechaVistaString?>"
+               max="<?=$hoyString?>"
+               onchange="this.form.submit()">
+
+        <?php if($puedeAvanzar): ?>
+            <a href="index.php?fecha=<?=$mananaString?>" class="btn-nav-fecha">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        <?php else: ?>
+            <span class="btn-nav-fecha disabled">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
+        <?php endif; ?>
+
     </form>
+
 
     <ul class="lista-tareas">
         <?php
-        $arrayTareas = $gestorTareas->getTareas();
 
         foreach ($arrayTareas as $tarea){
             $fechasStringsGuardadas = array_map(fn($f) => $f->format('Y-m-d'), $tarea->getFechas());
@@ -83,9 +111,7 @@ $fechaVistaString = $fechaVista->format('Y-m-d');
         ?>
     </ul>
 
-    <p style='text-align: center; color: #666;'>
-    <?= (empty($arrayTareas)) ? "No tienes hábitos creados para hoy" : ""?>
-    </p>
+    <?= empty($arrayTareas) ? "<p style='text-align: center; color: #666;'>No tienes hábitos creados. ¡Empieza hoy!</p>" : "" ?>
 
     <br>
 

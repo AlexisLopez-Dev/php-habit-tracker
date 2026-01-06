@@ -1,9 +1,9 @@
 <?php
-include_once('../modelos/Tarea.php');
-include_once('../modelos/GestorTareas.php');
+include_once('../modelos/DAOTarea.php');
+use Modelos\DAOTarea;
+
 session_start();
 
-$gestorTareas = $_SESSION["gestorTareas"];
 $id = (int)($_GET["id"] ?? 0);
 
 if (empty($id)){
@@ -12,14 +12,8 @@ if (empty($id)){
     exit();
 }
 
-if (empty($gestorTareas->buscarPorId($id))){
-    $_SESSION["error"] = "¡No existe ninguna tarea con ese ID!";
-    header('Location: ../index.php');
-    exit();
-}
-
-$gestorTareas->eliminarTarea($id);
-$_SESSION["gestorTareas"] = $gestorTareas;
+$dao = new DAOTarea();
+$dao->delete($id);
 
 header('Location: ../index.php');
 exit();

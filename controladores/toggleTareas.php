@@ -1,15 +1,8 @@
 <?php
-include_once('../modelos/Tarea.php');
-include_once('../modelos/GestorTareas.php');
-
-use Modelos\GestorTareas;
+include_once('../modelos/DAOTarea.php');
+use Modelos\DAOTarea;
 
 session_start();
-
-if (!isset($_SESSION['gestorTareas'])){
-    header('Location: ../index.php');
-    exit();
-}
 
 if (isset($_GET["id"]) && isset($_GET["date"])){
 
@@ -17,10 +10,20 @@ if (isset($_GET["id"]) && isset($_GET["date"])){
     $fechaString = $_GET["date"];
 
     $fecha = DateTime::createFromFormat('Y-m-d', $fechaString);
-    $fecha->setTime(0,0,0);
 
-    if($_SESSION["gestorTareas"]->buscarPorId($id)){
-        $_SESSION["gestorTareas"]->toggleTarea($id, $fecha);
+    if($fecha){
+        $fecha->setTime(0,0,0);
+
+        $hoy = new DateTime();
+        $hoy->setTime(0,0,0);
+
+        if ($fecha > $hoy) {
+            header('Location: ../index.php?fecha=' . $fechaString);
+            exit();
+        }
+
+        $dao = new DAOTarea();
+        $dao->toggleFecha($id, $fecha);
     }
 }
 
