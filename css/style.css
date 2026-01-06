@@ -29,10 +29,9 @@ body {
 h1 {
     text-align: center;
     font-weight: 800;
-    background: linear-gradient(to right, #c084fc, #e879f9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-color);
     margin-bottom: 30px;
+    text-shadow: 0 0 15px var(--accent-glow);
 }
 
 /* --- Formulario General --- */
