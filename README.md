@@ -38,6 +38,6 @@ El sistema utiliza una base de datos MySQL con dos tablas conectadas mediante un
 ## 🚀 Instalación y Despliegue Local
 
 1. Clonar el repositorio.
-2. Importar el esquema de base de datos adjunto (o crear las tablas detalladas arriba) en tu servidor MySQL.
+2. Importar el archivo `schema.sql` (ubicado en la raíz del proyecto) en tu servidor MySQL para generar la estructura de tablas necesaria.
 3. Configurar las credenciales de conexión en `servicios/config.inc.php`.
 4. Desplegar sobre un servidor local como XAMPP, MAMP o Docker.
