@@ -1,4 +1,4 @@
-# 🚀 Gestor de Hábitos (Habit Tracker)
+# ☑️ Gestor de Hábitos (Habit Tracker)
 
 Aplicación web full-stack desarrollada en **PHP puro** orientada a la creación y seguimiento de hábitos diarios. Este proyecto destaca por su arquitectura limpia, separación de responsabilidades y diseño de interfaz (UI/UX) moderno.
 
